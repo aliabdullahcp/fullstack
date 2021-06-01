@@ -1,0 +1,83 @@
+GET localhost:8080
+Response:
+"Welcome to the API Home Page."
+=======================================================================================
+POST localhost:8080/login
+{
+    "email":"admin@gmail.com",
+    "password":"password"
+}
+<TOKEN ID>
+
+========================================================================================
+GET localhost:8080/users/me
+<TOKEN ID>
+Response:
+User Details
+
+========================================================================================
+POST localhost:8080/register
+{
+    "nickname":"zahoor",
+    "email":"zahoor@gmail.com",
+    "password":"password",
+    "userrole":"User"
+}
+
+Response:
+{
+    "id": 3,
+    "nickname": "zahoor",
+    "email": "zahoor@gmail.com",
+    "password": "$2a$10$ZpPPhiQcoBVotVmEVJozWuJvsafHWcxlg/6cHO/KnbS12toTJWDwm",
+    "created_at": "2021-06-01T06:34:01.0989768Z",
+    "updated_at": "2021-06-01T06:34:01.098977Z",
+    "userrole": ""
+}
+========================================================================================
+GET localhost:8080/users
+<TOKEN ID>
+Response:
+[
+    {
+        "id": 1,
+        "nickname": "admin",
+        "email": "admin@gmail.com",
+        "password": "$2a$10$BZ6KDU/y5iOnVrKIyNQ5Pu/dobkg1/fqFFIgmE3kSKYIWbOIPkOry",
+        "created_at": "2021-06-01T06:08:48.864438Z",
+        "updated_at": "2021-06-01T06:08:48.864438Z",
+        "userrole": "Admin"
+    },
+    {
+        "id": 2,
+        "nickname": "Ali Abdullah",
+        "email": "aliabdullah@gmail.com",
+        "password": "$2a$10$oq1Tk3867BBpbkhV5Dln5eCZuFv3fYDGUXiznJ2g8toCU6WfaB5Qe",
+        "created_at": "2021-06-01T06:08:48.936809Z",
+        "updated_at": "2021-06-01T06:08:48.936809Z",
+        "userrole": "User"
+    },
+    {
+        "id": 3,
+        "nickname": "zahoor",
+        "email": "zahoor@gmail.com",
+        "password": "$2a$10$ZpPPhiQcoBVotVmEVJozWuJvsafHWcxlg/6cHO/KnbS12toTJWDwm",
+        "created_at": "2021-06-01T06:34:01.098977Z",
+        "updated_at": "2021-06-01T06:34:01.098977Z",
+        "userrole": ""
+    }
+]
+=====================================================================================================
+GET localhost:8080/users/1
+<TOKEN ID>
+Response:
+{
+    "id": 1,
+    "nickname": "admin",
+    "email": "admin@gmail.com",
+    "password": "$2a$10$.kgqrIHBuhR2NiLdoY9XIOqIvLx3djKwWmnG.qxJhjr68hQvwTDgK",
+    "created_at": "2021-06-01T06:40:10.624929Z",
+    "updated_at": "2021-06-01T06:40:10.624929Z",
+    "userrole": "Admin"
+}
+

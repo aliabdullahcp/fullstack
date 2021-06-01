@@ -9,14 +9,16 @@ import (
 
 var users = []models.User{
 	models.User{
-		Nickname: "Steven victor",
-		Email:    "steven@gmail.com",
+		Nickname: "admin",
+		Email:    "admin@gmail.com",
 		Password: "password",
+		UserRole: "Admin",
 	},
 	models.User{
-		Nickname: "Martin Luther",
-		Email:    "luther@gmail.com",
+		Nickname: "Ali Abdullah",
+		Email:    "aliabdullah@gmail.com",
 		Password: "password",
+		UserRole: "User",
 	},
 }
 

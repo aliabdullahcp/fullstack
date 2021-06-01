@@ -19,6 +19,7 @@ type User struct {
 	Password  string    `gorm:"size:100;not null;" json:"password"`
 	CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
+	UserRole  string    `gorm:"size:255;not null" json:"user_role"`
 }
 
 func Hash(password string) ([]byte, error) {
@@ -44,22 +45,26 @@ func (u *User) Prepare() {
 	u.Email = html.EscapeString(strings.TrimSpace(u.Email))
 	u.CreatedAt = time.Now()
 	u.UpdatedAt = time.Now()
+	u.UserRole = html.EscapeString(strings.TrimSpace(u.UserRole))
 }
 
 func (u *User) Validate(action string) error {
 	switch strings.ToLower(action) {
 	case "update":
 		if u.Nickname == "" {
-			return errors.New("Required Nickname")
+			return errors.New("required nickname")
 		}
 		if u.Password == "" {
-			return errors.New("Required Password")
+			return errors.New("required password")
 		}
 		if u.Email == "" {
-			return errors.New("Required Email")
+			return errors.New("required email")
 		}
 		if err := checkmail.ValidateFormat(u.Email); err != nil {
-			return errors.New("Invalid Email")
+			return errors.New("invalid email")
+		}
+		if u.UserRole != "User" && u.UserRole != "Admin" {
+			return errors.New("User Role Required")
 		}
 
 		return nil
@@ -87,6 +92,9 @@ func (u *User) Validate(action string) error {
 		}
 		if err := checkmail.ValidateFormat(u.Email); err != nil {
 			return errors.New("Invalid Email")
+		}
+		if u.UserRole != "User" {
+			return errors.New("Invalid User Role")
 		}
 		return nil
 	}
@@ -133,15 +141,17 @@ func (u *User) UpdateAUser(db *gorm.DB, uid uint32) (*User, error) {
 	}
 	db = db.Debug().Model(&User{}).Where("id = ?", uid).Take(&User{}).UpdateColumns(
 		map[string]interface{}{
-			"password":  u.Password,
-			"nickname":  u.Nickname,
-			"email":     u.Email,
-			"update_at": time.Now(),
+			"password":   u.Password,
+			"nickname":   u.Nickname,
+			"email":      u.Email,
+			"updated_at": time.Now(),
+			"user_role":  u.UserRole,
 		},
 	)
 	if db.Error != nil {
 		return &User{}, db.Error
 	}
+	log.Println("This is the Users.go file at 154")
 	// This is the display the updated user
 	err = db.Debug().Model(&User{}).Where("id = ?", uid).Take(&u).Error
 	if err != nil {
